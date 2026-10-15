@@ -1,0 +1,17 @@
+{% extends 'manage/base.html' %}
+{% block title %}Media{% endblock %}
+{% block heading %}Media library{% endblock %}
+{% block content %}
+<p class="toolbar"><a href="?">All</a> &middot; <a href="?type=image">Images</a> &middot; <a href="?type=video">Video</a> &middot; <a href="?type=audio">Audio</a>
+<span class="muted">Add media from inside each article's edit page.</span></p>
+<div class="media-cards">
+{% for m in page %}
+<div class="panel media-card">
+    {% if m.media_type == 'image' %}<img src="{{ m.file.url }}" alt="" class="thumb-lg">{% elif m.media_type == 'video' %}<video src="{{ m.file.url }}" controls preload="none" class="thumb-lg"></video>{% else %}<audio src="{{ m.file.url }}" controls preload="none"></audio>{% endif %}
+    <p><strong>{{ m.title|default:"Untitled" }}</strong><br><small>{{ m.get_media_type_display }} &middot; <a href="{% url 'manage_article_edit' m.article_id %}">{{ m.article.title|truncatechars:30 }}</a></small></p>
+    <a class="danger" href="{% url 'manage_media_delete' m.pk %}?next={% url 'manage_media_list' %}">Delete</a>
+</div>
+{% empty %}<p class="muted">No media files yet.</p>{% endfor %}
+</div>
+{% include 'manage/_pager.html' %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-inner">
+        <div class="hero-text">
+            <h1>{{ site.hero_title }}</h1>
+            {% if site.hero_subtitle %}<p class="lead">{{ site.hero_subtitle|linebreaksbr }}</p>{% endif %}
+            {% if site.hero_button_text %}<a class="btn" href="{{ site.hero_button_url }}">{{ site.hero_button_text }}</a>{% endif %}
+        </div>
+        <div class="hero-media">
+            {% if site.hero_image %}<img class="hero-img" src="{{ site.hero_image.url }}" alt="{{ site.hero_title }}">
+            {% else %}<div class="hero-img placeholder" aria-hidden="true"></div>{% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container split">
+        <div>
+            <h2>{{ site.intro_title }}</h2>
+            <p>{{ site.intro_text|linebreaksbr }}</p>
+            <a class="link-arrow" href="{% url 'about_us' %}">About us &rarr;</a>
+        </div>
+        {% if site.intro_image %}<div><img class="intro-img" src="{{ site.intro_image.url }}" alt="{{ site.intro_title }}"></div>{% endif %}
+    </div>
+</section>
+
+{% if services %}
+<section class="section alt">
+    <div class="container">
+        <h2 class="center">{{ site.services_title }}</h2>
+        {% if site.services_text %}<p class="center muted">{{ site.services_text|linebreaksbr }}</p>{% endif %}
+        <div class="grid">
+            {% for service in services %}
+            <article class="card service">
+                {% if service.icon %}<div class="icon" aria-hidden="true">{{ service.icon }}</div>{% endif %}
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.description|linebreaksbr }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if portfolio_items %}
+<section class="section">
+    <div class="container">
+        <h2 class="center">{{ site.portfolio_title }}</h2>
+        {% if site.portfolio_text %}<p class="center muted">{{ site.portfolio_text|linebreaksbr }}</p>{% endif %}
+        <div class="grid">{% for item in portfolio_items %}{% include 'portfolio_module/_card.html' %}{% endfor %}</div>
+        <p class="center"><a class="btn" href="{% url 'portfolio_list' %}">{{ site.portfolio_button_text|default:'View All Work' }}</a></p>
+    </div>
+</section>
+{% endif %}
+
+<section class="section alt">
+    <div class="container">
+        <h2 class="center">{{ site.articles_title }}</h2>
+        {% if site.articles_text %}<p class="center muted">{{ site.articles_text|linebreaksbr }}</p>{% endif %}
+        {% if latest_articles %}
+        <div class="grid">{% for article in latest_articles %}{% include 'article_module/_card.html' %}{% endfor %}</div>
+        <p class="center"><a class="btn" href="{% url 'article_list' %}">{{ site.articles_button_text|default:'View All Articles' }}</a></p>
+        {% else %}<p class="center muted">No articles have been published yet.</p>{% endif %}
+    </div>
+</section>
+
+<section class="section cta">
+    <div class="container center">
+        <h2>{{ site.contact_title }}</h2>
+        {% if site.contact_text %}<p>{{ site.contact_text|linebreaksbr }}</p>{% endif %}
+        <a class="btn btn-light" href="{% url 'contact_us' %}">Contact Us</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-about">
+            <h3>{{ site.site_name }}</h3>
+            {% if site.footer_text %}<p>{{ site.footer_text|linebreaksbr }}</p>{% endif %}
+            <ul class="contact-list">
+                {% if site.address %}<li>{{ site.address }}</li>{% endif %}
+                {% if site.phone %}<li>{{ site.phone }}</li>{% endif %}
+                {% if site.email %}<li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+            </ul>
+        </div>
+        {% for column in footer_columns %}
+        <div class="footer-col">
+            <h3>{{ column.title }}</h3>
+            <ul>
+                {% for link in column.links.all %}{% if link.is_active %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endif %}{% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container footer-bottom">{{ site.copyright_text }}</div>
+</footer>

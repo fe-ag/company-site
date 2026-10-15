@@ -1,0 +1,16 @@
+{% autoescape off %}Hello {{ contact.full_name }},
+
+Thank you for contacting us. Here is our reply:
+
+{{ contact.reply_text }}
+
+--------------------------------
+Your original message
+Name: {{ contact.full_name }}
+Email: {{ contact.email }}
+Subject: {{ contact.subject }}
+
+{{ contact.message }}
+--------------------------------
+{{ site.site_name }}{% if site.email %} - {{ site.email }}{% endif %}
+{% endautoescape %}

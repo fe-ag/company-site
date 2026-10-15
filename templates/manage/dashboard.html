@@ -1,0 +1,24 @@
+{% extends 'manage/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="stats">
+    <a class="stat" href="{% url 'manage_article_list' %}"><strong>{{ article_total }}</strong><span>Articles</span></a>
+    <a class="stat" href="{% url 'manage_article_list' %}?status=published"><strong>{{ article_published }}</strong><span>Published</span></a>
+    <a class="stat" href="{% url 'manage_article_list' %}?status=draft"><strong>{{ article_drafts }}</strong><span>Drafts</span></a>
+    <a class="stat" href="{% url 'manage_message_list' %}?status=new"><strong>{{ message_new }}</strong><span>New messages</span></a>
+    <a class="stat" href="{% url 'manage_portfolio_list' %}"><strong>{{ portfolio_total }}</strong><span>Portfolio items</span></a>
+    <a class="stat" href="{% url 'manage_media_list' %}"><strong>{{ media_total }}</strong><span>Media files</span></a>
+</div>
+<div class="two-col">
+    <section class="panel"><h2>Latest messages</h2>
+        {% for m in latest_messages %}<p><a href="{% url 'manage_message_detail' m.pk %}">{{ m.subject }}</a> <span class="badge badge-{{ m.status }}">{{ m.get_status_display }}</span><br><small>{{ m.full_name }} &middot; {{ m.created_at|date:"M j, H:i" }}</small></p>
+        {% empty %}<p class="muted">No messages yet.</p>{% endfor %}
+    </section>
+    <section class="panel"><h2>Latest articles</h2>
+        {% for a in latest_articles %}<p><a href="{% url 'manage_article_edit' a.pk %}">{{ a.title }}</a> <span class="badge badge-{{ a.status }}">{{ a.get_status_display }}</span></p>
+        {% empty %}<p class="muted">No articles yet.</p>{% endfor %}
+        <p><a class="btn btn-small" href="{% url 'manage_article_create' %}">New article</a></p>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'manage/base.html' %}
+{% block title %}Account{% endblock %}
+{% block heading %}Admin account{% endblock %}
+{% block content %}
+<section class="panel"><p>Signed in as <strong>{{ request.user.username }}</strong>.</p>
+<form method="post" action="{% url 'manage_logout' %}" class="inline">{% csrf_token %}<button class="btn btn-small" type="submit">Log out</button></form></section>
+<form method="post" class="panel form"><h2>Change password</h2>{% csrf_token %}{% include 'manage/_form_fields.html' %}<button class="btn" type="submit">Change password</button></form>
+{% endblock %}

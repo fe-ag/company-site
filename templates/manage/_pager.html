@@ -1,0 +1,7 @@
+{% if page.paginator.num_pages > 1 %}
+<p class="pager">
+    {% if page.has_previous %}<a href="?{% if status %}status={{ status }}&amp;{% endif %}{% if media_type %}type={{ media_type }}&amp;{% endif %}page={{ page.previous_page_number }}">&larr; Previous</a>{% endif %}
+    Page {{ page.number }} of {{ page.paginator.num_pages }}
+    {% if page.has_next %}<a href="?{% if status %}status={{ status }}&amp;{% endif %}{% if media_type %}type={{ media_type }}&amp;{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+</p>
+{% endif %}

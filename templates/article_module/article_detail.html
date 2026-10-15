@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.seo_title|default:object.title }} | {{ site.site_name }}{% endblock %}
+{% block meta_description %}{{ object.meta_description|default:object.excerpt|truncatechars:160 }}{% endblock %}
+{% block content %}
+<article class="section">
+    <div class="container narrow">
+        <p class="meta"><a href="{% url 'article_list' %}">&larr; All articles</a></p>
+        <h1>{{ object.title }}</h1>
+        <p class="meta">{{ object.published_at|date:"F j, Y" }}{% if object.author %} &middot; by {{ object.author.get_full_name|default:object.author.username }}{% endif %}</p>
+        {% if object.featured_image %}<img class="article-hero" src="{{ object.featured_image.url }}" alt="{{ object.title }}">{% endif %}
+        <p class="lead">{{ object.excerpt }}</p>
+        <div class="prose">{{ object.content|linebreaks }}</div>
+
+        {% if images %}<h2>Gallery</h2><div class="media-grid">{% for m in images %}<figure><img src="{{ m.file.url }}" alt="{{ m.title }}" loading="lazy">{% if m.title %}<figcaption>{{ m.title }}</figcaption>{% endif %}</figure>{% endfor %}</div>{% endif %}
+        {% if videos %}<h2>Video</h2>{% for m in videos %}<figure><video controls preload="metadata" src="{{ m.file.url }}"></video>{% if m.title %}<figcaption>{{ m.title }}</figcaption>{% endif %}</figure>{% endfor %}{% endif %}
+        {% if audios %}<h2>Audio</h2>{% for m in audios %}<figure><audio controls preload="none" src="{{ m.file.url }}"></audio>{% if m.title %}<figcaption>{{ m.title }}</figcaption>{% endif %}</figure>{% endfor %}{% endif %}
+    </div>
+</article>
+{% endblock %}

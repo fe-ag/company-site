@@ -1,0 +1,24 @@
+{% extends 'manage/base.html' %}
+{% block title %}Navigation and footer{% endblock %}
+{% block heading %}Navigation and footer{% endblock %}
+{% block content %}
+<section class="panel"><h2>Main menu</h2>
+    <p><a class="btn btn-small" href="{% url 'manage_nav_create' %}">Add menu link</a></p>
+    <table class="table"><thead><tr><th>Order</th><th>Text</th><th>Link</th><th>Active</th><th></th></tr></thead><tbody>
+    {% for l in nav_links %}<tr><td>{{ l.order }}</td><td>{{ l.title }}</td><td>{{ l.url }}</td><td>{{ l.is_active|yesno:"Yes,No" }}</td>
+    <td class="actions"><a href="{% url 'manage_nav_edit' l.pk %}">Edit</a><a class="danger" href="{% url 'manage_nav_delete' l.pk %}">Delete</a></td></tr>
+    {% empty %}<tr><td colspan="5" class="muted">No menu links.</td></tr>{% endfor %}</tbody></table>
+</section>
+<section class="panel"><h2>Footer columns and links</h2>
+    <p><a class="btn btn-small" href="{% url 'manage_column_create' %}">Add column</a>
+       <a class="btn btn-small" href="{% url 'manage_footer_link_create' %}">Add link</a></p>
+    {% for c in columns %}
+    <h3>{{ c.title }} <small>(order {{ c.order }}, {{ c.is_active|yesno:"active,hidden" }})</small>
+        <a href="{% url 'manage_column_edit' c.pk %}">Edit</a> <a class="danger" href="{% url 'manage_column_delete' c.pk %}">Delete</a></h3>
+    <table class="table"><tbody>
+    {% for l in c.links.all %}<tr><td>{{ l.order }}</td><td>{{ l.title }}</td><td>{{ l.url }}</td><td>{{ l.is_active|yesno:"Yes,No" }}</td>
+    <td class="actions"><a href="{% url 'manage_footer_link_edit' l.pk %}">Edit</a><a class="danger" href="{% url 'manage_footer_link_delete' l.pk %}">Delete</a></td></tr>
+    {% empty %}<tr><td class="muted">No links in this column.</td></tr>{% endfor %}</tbody></table>
+    {% empty %}<p class="muted">No footer columns yet. Footer text, contact details and copyright are edited under Website content.</p>{% endfor %}
+</section>
+{% endblock %}

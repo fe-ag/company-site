@@ -1,0 +1,11 @@
+<article class="card article-card">
+    <a href="{{ item.get_absolute_url }}" class="card-media" tabindex="-1" aria-hidden="true">
+        {% if item.image %}<img class="article-img" src="{{ item.image.url }}" alt="">{% else %}<div class="article-img placeholder"></div>{% endif %}
+    </a>
+    <div class="card-body">
+        {% if item.category %}<p class="meta">{{ item.category }}</p>{% endif %}
+        <h3><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+        <p>{{ item.summary|truncatewords:26 }}</p>
+        <a class="link-arrow" href="{{ item.get_absolute_url }}">View project &rarr;</a>
+    </div>
+</article>

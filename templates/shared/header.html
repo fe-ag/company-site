@@ -1,0 +1,18 @@
+{% load static %}
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="{% url 'home_page' %}">
+            {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.site_name }}" class="logo">{% endif %}
+            <span class="brand-name">{{ site.site_name }}</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">&#9776;</button>
+        <nav id="main-nav" class="main-nav" aria-label="Main">
+            <ul>
+                {% for link in nav_links %}
+                <li><a href="{{ link.url }}"{% if request.path == link.url %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+            {% if site.header_button_text %}<a class="btn btn-small" href="{{ site.header_button_url }}">{{ site.header_button_text }}</a>{% endif %}
+        </nav>
+    </div>
+</header>

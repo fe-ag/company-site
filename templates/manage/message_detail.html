@@ -1,0 +1,32 @@
+{% extends 'manage/base.html' %}
+{% block title %}{{ contact.subject }}{% endblock %}
+{% block heading %}Message{% endblock %}
+{% block content %}
+<section class="panel">
+    <dl class="details">
+        <dt>From</dt><dd>{{ contact.full_name }}</dd>
+        <dt>Email</dt><dd>{{ contact.email }}</dd>
+        <dt>Subject</dt><dd>{{ contact.subject }}</dd>
+        <dt>Sent</dt><dd>{{ contact.created_at|date:"F j, Y H:i" }} UTC</dd>
+        <dt>Status</dt><dd><span class="badge badge-{{ contact.status }}">{{ contact.get_status_display }}</span>
+            {% if contact.replied_at %} &middot; replied {{ contact.replied_at|date:"F j, Y H:i" }} UTC{% endif %}</dd>
+    </dl>
+    <h3>Message</h3>
+    <div class="message-body">{{ contact.message|linebreaks }}</div>
+    <form method="post" action="{% url 'manage_message_status' contact.pk %}" class="inline">{% csrf_token %}
+        {% if contact.status != 'new' %}<button class="btn btn-small" name="status" value="new">Mark as new</button>{% endif %}
+        {% if contact.status == 'new' %}<button class="btn btn-small" name="status" value="read">Mark as read</button>{% endif %}
+    </form>
+    <a class="danger" href="{% url 'manage_message_delete' contact.pk %}">Delete message</a>
+</section>
+
+<section class="panel">
+    <h2>{% if contact.status == 'replied' %}Reply sent{% else %}Reply{% endif %}</h2>
+    {% if contact.reply_error %}<div class="flash flash-error">Last email attempt failed: {{ contact.reply_error }}</div>{% endif %}
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% include 'manage/_form_fields.html' %}
+        <button class="btn" type="submit" data-confirm="Send this reply by email to {{ contact.email }}?">{% if contact.status == 'replied' %}Send again{% else %}Send Reply{% endif %}</button>
+    </form>
+</section>
+{% endblock %}

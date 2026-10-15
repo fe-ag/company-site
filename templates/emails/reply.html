@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="margin:0;padding:0;background:#f4f6fb;font-family:Arial,Helvetica,sans-serif;color:#1b2333;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:24px 0;">
+<tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:8px;">
+<tr><td style="padding:24px 32px;background:#0b1f4d;color:#ffffff;font-size:20px;font-weight:bold;border-radius:8px 8px 0 0;">{{ site.site_name }}</td></tr>
+<tr><td style="padding:32px;">
+<p style="margin:0 0 16px;">Hello {{ contact.full_name }},</p>
+<p style="margin:0 0 8px;">Thank you for contacting us. Here is our reply:</p>
+<div style="padding:16px;background:#eef3ff;border-left:4px solid #1f5eff;margin:0 0 24px;">{{ contact.reply_text|linebreaksbr }}</div>
+<p style="margin:0 0 8px;color:#5b6578;font-size:13px;">Your original message</p>
+<table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px;border:1px solid #dde3ef;width:100%;">
+<tr><td style="padding:8px 12px;color:#5b6578;width:90px;">Name</td><td style="padding:8px 12px;">{{ contact.full_name }}</td></tr>
+<tr><td style="padding:8px 12px;color:#5b6578;">Email</td><td style="padding:8px 12px;">{{ contact.email }}</td></tr>
+<tr><td style="padding:8px 12px;color:#5b6578;">Subject</td><td style="padding:8px 12px;">{{ contact.subject }}</td></tr>
+<tr><td style="padding:8px 12px;color:#5b6578;vertical-align:top;">Message</td><td style="padding:8px 12px;">{{ contact.message|linebreaksbr }}</td></tr>
+</table>
+</td></tr>
+<tr><td style="padding:16px 32px;font-size:12px;color:#5b6578;border-top:1px solid #dde3ef;">{{ site.site_name }}{% if site.email %} &middot; {{ site.email }}{% endif %}</td></tr>
+</table></td></tr></table>
+</body></html>

@@ -1,0 +1,16 @@
+{% extends 'manage/base.html' %}
+{% block title %}Contact messages{% endblock %}
+{% block heading %}Contact messages{% endblock %}
+{% block content %}
+<p class="toolbar"><a href="?">All</a> &middot; <a href="?status=new">New</a> &middot; <a href="?status=read">Read</a> &middot; <a href="?status=replied">Replied</a></p>
+<table class="table"><thead><tr><th>From</th><th>Subject</th><th>Status</th><th>Sent</th><th></th></tr></thead><tbody>
+{% for m in page %}<tr{% if m.status == 'new' %} class="unread"{% endif %}>
+    <td>{{ m.full_name }}<br><small>{{ m.email }}</small></td>
+    <td><a href="{% url 'manage_message_detail' m.pk %}">{{ m.subject }}</a></td>
+    <td><span class="badge badge-{{ m.status }}">{{ m.get_status_display }}</span></td>
+    <td>{{ m.created_at|date:"M j, Y H:i" }}</td>
+    <td class="actions"><a href="{% url 'manage_message_detail' m.pk %}">Open</a><a class="danger" href="{% url 'manage_message_delete' m.pk %}">Delete</a></td>
+</tr>{% empty %}<tr><td colspan="5" class="muted">No messages.</td></tr>{% endfor %}
+</tbody></table>
+{% include 'manage/_pager.html' %}
+{% endblock %}

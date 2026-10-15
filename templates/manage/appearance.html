@@ -1,0 +1,43 @@
+{% extends 'manage/base.html' %}
+{% block title %}Appearance{% endblock %}
+{% block heading %}Appearance and theme{% endblock %}
+{% block content %}
+<form method="post" class="form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="flash flash-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% for group_title, fields in form.groups %}
+    <section class="panel"><h2>{{ group_title }}</h2>
+        <div class="field-grid">
+        {% for field in fields %}
+        <div class="field{% if field.errors %} has-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+            {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+        </div>
+        {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+    <p><button class="btn" type="submit">Save appearance</button></p>
+</form>
+
+<section class="panel">
+    <h2>Upload a font</h2>
+    <p class="help">WOFF, WOFF2, TTF or OTF, up to 2 MB. Make sure you have the right to use the font on a website. After uploading, select it in "Main font" or "Heading font".</p>
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}<input type="hidden" name="action" value="upload_font">
+        {% include 'manage/_form_fields.html' with form=font_form %}
+        <button class="btn" type="submit">Upload font</button>
+    </form>
+    {% if fonts %}<table class="table"><tbody>{% for f in fonts %}<tr><td>{{ f.name }}</td><td><a class="danger" href="{% url 'manage_font_delete' f.pk %}">Delete</a></td></tr>{% endfor %}</tbody></table>{% endif %}
+</section>
+
+<section class="panel">
+    <h2>Restore default values</h2>
+    <p class="help">Tick only what you want to put back to the original value. Everything else stays as it is.</p>
+    <form method="post" action="{% url 'manage_appearance_reset' %}" class="form" data-confirm="Restore the ticked groups to their default values? Your current values for them will be lost.">
+        {% csrf_token %}
+        <div class="checks">{% for checkbox in reset_form.groups %}<label class="check">{{ checkbox.tag }} {{ checkbox.choice_label }}</label>{% endfor %}</div>
+        <p><button class="btn btn-danger" type="submit">Restore selected defaults</button></p>
+    </form>
+</section>
+{% endblock %}

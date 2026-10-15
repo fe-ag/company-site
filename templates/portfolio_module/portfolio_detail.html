@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.title }} | {{ site.site_name }}{% endblock %}
+{% block meta_description %}{{ object.summary|truncatechars:160 }}{% endblock %}
+{% block content %}
+<article class="section">
+    <div class="container narrow">
+        <p class="meta"><a href="{% url 'portfolio_list' %}">&larr; All projects</a></p>
+        <h1>{{ object.title }}</h1>
+        {% if object.category %}<p class="meta">{{ object.category }}</p>{% endif %}
+        {% if object.image %}<img class="article-hero" src="{{ object.image.url }}" alt="{{ object.title }}">{% endif %}
+        <p class="lead">{{ object.summary }}</p>
+        {% if object.description %}<div class="prose">{{ object.description|linebreaks }}</div>{% endif %}
+        {% if object.project_url %}<p><a class="btn" href="{{ object.project_url }}" rel="noopener noreferrer">Visit project</a></p>{% endif %}
+    </div>
+</article>
+{% endblock %}

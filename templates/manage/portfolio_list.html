@@ -1,0 +1,15 @@
+{% extends 'manage/base.html' %}
+{% block title %}Portfolio{% endblock %}
+{% block heading %}Portfolio{% endblock %}
+{% block content %}
+<p class="toolbar"><a class="btn" href="{% url 'manage_portfolio_create' %}">Add portfolio item</a></p>
+<table class="table"><thead><tr><th>Image</th><th>Title</th><th>Order</th><th>Visible</th><th></th></tr></thead><tbody>
+{% for item in page %}<tr>
+    <td>{% if item.image %}<img src="{{ item.image.url }}" alt="" class="thumb">{% else %}-{% endif %}</td>
+    <td><a href="{% url 'manage_portfolio_edit' item.pk %}">{{ item.title }}</a><br><small>{{ item.category }}</small></td>
+    <td>{{ item.order }}</td><td>{{ item.is_active|yesno:"Yes,No" }}</td>
+    <td class="actions"><a href="{% url 'manage_portfolio_edit' item.pk %}">Edit</a><a class="danger" href="{% url 'manage_portfolio_delete' item.pk %}">Delete</a></td>
+</tr>{% empty %}<tr><td colspan="5" class="muted">No portfolio items yet.</td></tr>{% endfor %}
+</tbody></table>
+{% include 'manage/_pager.html' %}
+{% endblock %}

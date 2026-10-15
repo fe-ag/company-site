@@ -1,0 +1,11 @@
+<article class="card article-card">
+    <a href="{{ article.get_absolute_url }}" class="card-media" tabindex="-1" aria-hidden="true">
+        {% if article.featured_image %}<img class="article-img" src="{{ article.featured_image.url }}" alt="">{% else %}<div class="article-img placeholder"></div>{% endif %}
+    </a>
+    <div class="card-body">
+        <p class="meta">{{ article.published_at|date:"M j, Y" }}{% if article.author %} &middot; {{ article.author.get_full_name|default:article.author.username }}{% endif %}</p>
+        <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+        <p>{{ article.excerpt|truncatewords:28 }}</p>
+        <a class="link-arrow" href="{{ article.get_absolute_url }}">Read more &rarr;</a>
+    </div>
+</article>

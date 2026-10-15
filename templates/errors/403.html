@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Access denied | {{ site.site_name }}{% endblock %}
+{% block content %}
+<section class="section"><div class="container center"><h1>403</h1><p class="muted">You do not have permission to view this page.</p><a class="btn" href="{% url 'home_page' %}">Back to home</a></div></section>
+{% endblock %}

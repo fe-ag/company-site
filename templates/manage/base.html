@@ -1,0 +1,41 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>{% block title %}Management{% endblock %} | Manage</title>
+    <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar">
+        <div class="side-brand">Management</div>
+        <nav aria-label="Management">
+            {% url 'manage_dashboard' as u_dash %}{% url 'manage_article_list' as u_art %}{% url 'manage_portfolio_list' as u_port %}{% url 'manage_media_list' as u_media %}
+            {% url 'manage_content' as u_content %}{% url 'manage_appearance' as u_app %}{% url 'manage_navigation' as u_nav %}
+            {% url 'manage_message_list' as u_msg %}{% url 'manage_account' as u_acc %}
+            <a href="{{ u_dash }}"{% if request.path == u_dash %} class="active"{% endif %}>Dashboard</a>
+            <a href="{{ u_art }}"{% if u_art in request.path %} class="active"{% endif %}>Articles</a>
+            <a href="{{ u_port }}"{% if u_port in request.path %} class="active"{% endif %}>Portfolio</a>
+            <a href="{{ u_media }}"{% if u_media in request.path %} class="active"{% endif %}>Media</a>
+            <a href="{{ u_content }}"{% if u_content in request.path %} class="active"{% endif %}>Website content</a>
+            <a href="{{ u_app }}"{% if u_app in request.path %} class="active"{% endif %}>Appearance</a>
+            <a href="{{ u_nav }}"{% if u_nav in request.path %} class="active"{% endif %}>Navigation &amp; footer</a>
+            <a href="{{ u_msg }}"{% if u_msg in request.path %} class="active"{% endif %}>Contact messages</a>
+            <a href="{{ u_acc }}"{% if u_acc in request.path %} class="active"{% endif %}>Account</a>
+            <a href="{% url 'home_page' %}" target="_blank" rel="noopener">View website &nearr;</a>
+        </nav>
+        <form method="post" action="{% url 'manage_logout' %}" class="logout">{% csrf_token %}<button type="submit">Log out ({{ request.user.username }})</button></form>
+    </aside>
+    <div class="main">
+        <header class="topbar"><button type="button" id="side-toggle" aria-label="Toggle menu">&#9776;</button><h1>{% block heading %}{% endblock %}</h1></header>
+        <div class="content">
+            {% for message in messages %}<div class="flash flash-{{ message.tags }}" role="status">{{ message }}</div>{% endfor %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/manage.js' %}"></script>
+</body>
+</html>

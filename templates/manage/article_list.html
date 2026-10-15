@@ -1,0 +1,28 @@
+{% extends 'manage/base.html' %}
+{% block title %}Articles{% endblock %}
+{% block heading %}Articles{% endblock %}
+{% block content %}
+<p class="toolbar">
+    <a class="btn" href="{% url 'manage_article_create' %}">New article</a>
+    <a href="?">All</a> &middot; <a href="?status=published">Published</a> &middot; <a href="?status=draft">Drafts</a>
+</p>
+<table class="table">
+    <thead><tr><th>Title</th><th>Status</th><th>Date</th><th>Author</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for a in page %}
+    <tr>
+        <td><a href="{% url 'manage_article_edit' a.pk %}">{{ a.title }}</a></td>
+        <td><span class="badge badge-{{ a.status }}">{{ a.get_status_display }}</span></td>
+        <td>{{ a.published_at|date:"M j, Y" }}</td>
+        <td>{{ a.author|default:"-" }}</td>
+        <td class="actions">
+            <a href="{% url 'manage_article_edit' a.pk %}">Edit</a>
+            <form method="post" action="{% url 'manage_article_toggle' a.pk %}">{% csrf_token %}<button type="submit" class="link">{% if a.is_published %}Unpublish{% else %}Publish{% endif %}</button></form>
+            <a class="danger" href="{% url 'manage_article_delete' a.pk %}">Delete</a>
+        </td>
+    </tr>
+    {% empty %}<tr><td colspan="5" class="muted">No articles.</td></tr>{% endfor %}
+    </tbody>
+</table>
+{% include 'manage/_pager.html' %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'manage/base.html' %}
+{% block title %}{% if article %}Edit article{% else %}New article{% endif %}{% endblock %}
+{% block heading %}{% if article %}Edit article{% else %}New article{% endif %}{% endblock %}
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="panel form">
+    {% csrf_token %}
+    {% include 'manage/_form_fields.html' %}
+    {% if article and article.featured_image %}<p><img src="{{ article.featured_image.url }}" alt="" class="thumb"></p>{% endif %}
+    <p class="help">Status "Draft" keeps the article hidden from visitors. "Published" shows it once the publication date has passed.</p>
+    <p><button class="btn" type="submit">Save article</button>
+    {% if article %}<a href="{% url 'manage_article_delete' article.pk %}" class="btn btn-danger">Delete</a>{% endif %}
+    <a href="{% url 'manage_article_list' %}">Cancel</a></p>
+</form>
+
+{% if article %}
+<section class="panel">
+    <h2>Images, video and audio</h2>
+    <p class="help">Images: JPG, PNG, GIF, WebP (5 MB). Video: MP4, WebM, OGV (100 MB). Audio: MP3, WAV, OGG, M4A (30 MB).</p>
+    <table class="table">
+        <thead><tr><th>Preview</th><th>Type</th><th>Title</th><th>Order</th><th></th></tr></thead>
+        <tbody>
+        {% for m in media_items %}
+        <tr>
+            <td>{% if m.media_type == 'image' %}<img src="{{ m.file.url }}" alt="" class="thumb">{% else %}<a href="{{ m.file.url }}" target="_blank" rel="noopener">Open file</a>{% endif %}</td>
+            <td>{{ m.get_media_type_display }}</td><td>{{ m.title|default:"-" }}</td><td>{{ m.order }}</td>
+            <td><a class="danger" href="{% url 'manage_media_delete' m.pk %}">Delete</a></td>
+        </tr>
+        {% empty %}<tr><td colspan="5" class="muted">No media yet.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}<input type="hidden" name="action" value="add_media">
+        {% include 'manage/_form_fields.html' with form=media_form %}
+        <button class="btn" type="submit">Add media</button>
+    </form>
+</section>
+{% endif %}
+{% endblock %}
